@@ -34,6 +34,8 @@ try:
 
                 )
                 
+
+                
                 # كتابة الأرقام على النقاط
                 #h, w = frame.shape[:2]
                 #for id, landmark in enumerate(hand_landmarks.landmark):
@@ -47,8 +49,11 @@ try:
                 #                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1)
         
         # عرض معدل الإطارات
-        cv2.putText(frame, f"FPS: {int(webcam.get(cv2.CAP_PROP_FPS))}", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
+        # cv2.putText(frame, f"FPS: {int(webcam.get(cv2.CAP_PROP_FPS))}", (10, 30),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 1, (211,51,51), 2)
+        
+        cv2.putText(frame, f"Hello Genius!", (20, 40),
+                    cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
         
         cv2.imshow("Hand Landmarks", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
