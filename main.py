@@ -1,11 +1,12 @@
 import cv2
 import mediapipe as mp
+import numpy as np
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7, min_tracking_confidence=0.5)
 mp_drawing = mp.solutions.drawing_utils
 
-webcam = cv2.VideoCapture(1)
+webcam = cv2.VideoCapture(0)
 
 try:
     while webcam.isOpened():
@@ -33,31 +34,31 @@ try:
                     mp_drawing.DrawingSpec(color=(225,225,225), thickness=1),  # لون الخطوط
 
             )
-                thumb_y, index_y = 0, 0                
-                
+                thumbTip_y, indexTip_y = 0, 0                
+                thumbTip_x , indexTip_x =0,0
                 h, w , _ = frame.shape
+                lary = np.zeros((21, 3))  # array of 21 rows and 3 cols for hand landmarks
                 for id, landmark in enumerate(hand_landmarks.landmark):
-            
-                    if id == 4 or id == 8 or id == 12 or id == 16 or id == 20:
-                        x = int(landmark.x * w)
-                        y = int(landmark.y * h)
-
-                        cv2.putText(frame, f"P{id}({x},{y})", (x+10,y-10),
-                    cv2.FONT_HERSHEY_DUPLEX, .4, (211,51,51), 1)
-                        if id == 4:
-                            thumb_y = y
-                            thumb_x = x
-                        if id == 8:
-                            index_y =  y
-                            index_x = x
-                            okY = thumb_y - index_y
-                            okX = thumb_x - index_x
-                            if thumb_y != 0 and index_y != 0:#todo: re-write it
-
-                                if ((okY <= 23)and (okY >= 0))and(okX <= 17):
-                                    cv2.putText(frame, f"Hello Genius!", (20, 40),
-                                                cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
-
+                    
+                    lary[id] = [int(landmark.x * w), int(landmark.y * h), float(landmark.z * w)]
+                    
+                    #thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+                    
+                    okZ = lary[4][2] - lary[8][2] 
+                    if(id%4==0): #يطبع لي اطراف الاصابع والرقم 0
+                        cv2.putText(frame, f"P{id}({lary[id][0]},{lary[id][1]},{round(lary[id][2],2)})", (int(lary[id][0]+10),int(lary[id][1]-10)),
+                        cv2.FONT_HERSHEY_DUPLEX, .4, (211,51,51), 1)
+                    #    print("\nYour Celsius value is {:0.2f}ºC.\n".format(answer))
+                    okX = lary[4][0] - lary[8][0]
+                    okY = lary[4][1] - lary[8][1] #functions to see if the ok symbol apply according to x,y
+                    if lary[4][1] != 0 and lary[8][1] != 0:#todo: re-write it
+                        if (okY <= 23)and (okY >= 0) and(okX <= 17) and (okZ >= -3) and (okZ <= 35):
+                            cv2.putText(frame, f"Hello Genius!", (20, 40),
+                                        cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
+                    thumbsUp = lary[4][0] - lary[3][0] + lary[2][0] + lary[1][0]
+                    if (thumbsUp <= 20 and thumbsUp >= -20):
+                        break
+                        
                             #the rest of points will disappear if thumb tip almost/meets the index tip
 
                     #if 4 - 8 >=30 
@@ -66,8 +67,9 @@ try:
 #                    cv2.putText(frame, f"({hand_landmarks.x},{hand_landmarks.y})", (x, y),
 #                cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
 
+#todo: create a sign to stop the program
 
-                
+        
                 # كتابة الأرقام على النقاط
                 #h, w = frame.shape[:2]
                 #for id, landmark in enumerate(hand_landmarks.landmark):
