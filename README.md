@@ -9,4 +9,7 @@ I just got an idea, will start recording my changes here!
 - optimized the if statements for showing the points' coordinates (start using mathematical logic instead of multiple ORs)
 - rounded the z values for clear visualization
 
-
+13:24
+- added a thumbs up detector (without youtube)
+- start  using the range function, can't belive I forgot about it! life is easier now
+- messed up a little with the thumbup and ok if statements(I was trying to optimize it using range), will fix it later

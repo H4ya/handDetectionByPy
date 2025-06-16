@@ -16,12 +16,12 @@ try:
             
         # قلب الإطار أولاً (لتصحيح المرآة)
         frame = cv2.flip(frame, 1)
-        
+        thumbsUp = "No thumbs |:"
+
         # معالجة الإطار
         frame.flags.writeable = False
         results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         frame.flags.writeable = True
-        
         # رسم المعالم والوصلات
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
@@ -34,8 +34,6 @@ try:
                     mp_drawing.DrawingSpec(color=(225,225,225), thickness=1),  # لون الخطوط
 
             )
-                thumbTip_y, indexTip_y = 0, 0                
-                thumbTip_x , indexTip_x =0,0
                 h, w , _ = frame.shape
                 lary = np.zeros((21, 3))  # array of 21 rows and 3 cols for hand landmarks
                 for id, landmark in enumerate(hand_landmarks.landmark):
@@ -44,20 +42,27 @@ try:
                     
                     #thumb_tip = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
                     
-                    okZ = lary[4][2] - lary[8][2] 
+                    okZ = lary[4][2] - lary[8][2]
                     if(id%4==0): #يطبع لي اطراف الاصابع والرقم 0
                         cv2.putText(frame, f"P{id}({lary[id][0]},{lary[id][1]},{round(lary[id][2],2)})", (int(lary[id][0]+10),int(lary[id][1]-10)),
                         cv2.FONT_HERSHEY_DUPLEX, .4, (211,51,51), 1)
                     #    print("\nYour Celsius value is {:0.2f}ºC.\n".format(answer))
-                    okX = lary[4][0] - lary[8][0]
-                    okY = lary[4][1] - lary[8][1] #functions to see if the ok symbol apply according to x,y
+                    okX = lary[8][0] - lary[4][0]
+                    okY = lary[4][1] - lary[8][1] #functions to see if the ok symbol apply according to x, y & z
                     if lary[4][1] != 0 and lary[8][1] != 0:#todo: re-write it
-                        if (okY <= 23)and (okY >= 0) and(okX <= 17) and (okZ >= -3) and (okZ <= 35):
+                        if (okY <= 23) and (okY >= 0) and(okX in range(-1,8)) and (okZ >= -3) and (okZ <= 35):
                             cv2.putText(frame, f"Hello Genius!", (20, 40),
                                         cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
-                    thumbsUp = lary[4][0] - lary[3][0] + lary[2][0] + lary[1][0]
-                    if (thumbsUp <= 20 and thumbsUp >= -20):
-                        break
+                if (int((lary[4][0] + lary[3][0] + lary[2][0])/3) in range (int(lary[4][0]-15),int(lary[4][0]+15)) and lary[4][1]<lary[3][1] and (lary[4][2] in range(-35,11))):
+                    thumbsUp = "Thumbs UP :D"
+                    
+                elif(int((lary[4][0] + lary[3][0] + lary[2][0])/3) in range (int(lary[4][0]-15),int(lary[4][0]+15)) and lary[4][1]>lary[2][1]):
+                    thumbsUp = "Thumbs down D:"
+                else:
+                    thumbsUp = "No thumbs |:"
+
+                    
+
                         
                             #the rest of points will disappear if thumb tip almost/meets the index tip
 
@@ -88,7 +93,10 @@ try:
 
             #cv2.putText(frame, f"Hello Genius!", (20, 40),
             #cv2.FONT_HERSHEY_DUPLEX, 1.3, (211,51,51), 1)
-            
+        cv2.putText(frame, f"{thumbsUp}", (15,70),
+            cv2.FONT_HERSHEY_DUPLEX, .8, (211,0,0), 1)
+        
+
         cv2.imshow("Hand Landmarks", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             exit()
