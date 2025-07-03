@@ -27,6 +27,15 @@ I'm proud and sleepy
 - I added if statement to check the space between 4 and 5
 - I missed up something in the lines 80-87 
 
-7/02/2025 23:05 :
+02/07/2025 23:05 :
 - Trying to add a sound control feature cuz it looks cool
 - (one hour later) I did it it is really cool!!!
+- (+30 min) negative numbers are the worst!!!! it keeps crashing it
+- Done!!
+- deleted the thumbs up\down recognition
+
+03/07/2025 15:33 :
++ I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
+
+04/07/2025 11:40 :
+- adding a line between index and thumb for more visual clarity

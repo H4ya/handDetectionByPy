@@ -4,15 +4,23 @@ import numpy as np
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
-
 def set_volume(level):  # level: float between 0.0 and 1.0
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = cast(interface, POINTER(IAudioEndpointVolume))
     volume.SetMasterVolumeLevelScalar(level, None)
+    cv2.putText(
+        frame,
+        f"volume is : {int(dist_yP*100)}%", 
+        (15, 80),
+        cv2.FONT_HERSHEY_DUPLEX, 
+        0.8, 
+        (211, 0, 0), 
+        1
+    )
 
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7, min_tracking_confidence=0.5)
+hands = mp_hands.Hands(max_num_hands=1, min_detection_confidence=0.7, min_tracking_confidence=0.5)
 mp_drawing = mp.solutions.drawing_utils
 
 webcam = cv2.VideoCapture(0)
@@ -76,7 +84,7 @@ try:
                         okX = lary[8][1] - lary[4][1]
                         okY = lary[4][2] - lary[8][2]
                         
-                        if (okY <= 23) and (okY >= 0) and (okX in range(-1,8)) and (okZ >= -3) and (okZ <= 35):
+                        if (okY <= 23) and (okY >= 0) and (okX in range(-7,8)) and (okZ >= -3) and (okZ <= 35):
                             cv2.putText(
                                 frame,
                                 "Hello Genius!",
@@ -89,32 +97,25 @@ try:
                 #distances
                 dist_x = lary[8][1]-lary[4][1] #should be positive
                 dist_y = lary[4][2]-lary[8][2] #should be positive too 
-                dist_yP = float(dist_y/170) if dist_y<170 else 1 #the percentage from 0 to 1
-                # dir = 1 if label == "Right" else 0
+                dist_yP = float(dist_y/170) #the percentage from 0 to 1
+                if (dist_yP<=0.11):
+                    dist_yP =0 
+                elif (dist_yP>=1):
+                    dist_yP = 1
+                    # needed it to manage the abnormal values (negative or over the limit 170)
 
                 if(dist_x <=0):
-                    if (dist_y <= 0):
-                        dist_yP = 0.0
                     set_volume(dist_yP)
-                    cv2.putText(
-                        frame,
-                        f"volume is approx: {dist_yP*100}", 
-                        (15, 140),
-                        cv2.FONT_HERSHEY_DUPLEX, 
-                        0.8, 
-                        (211, 0, 0), 
-                        1
-                    )
-                    set_volume(dist_yP)
+
                 # Thumb state detection
-                avg_x = int((lary[4][1] + lary[3][1] )/2)
+                '''avg_x = int((lary[4][1] + lary[3][1] )/2)
                 if ((lary[8][1]-lary[8+1][1] in range(-60,60))):
                     if (avg_x in range(int(lary[4][1]-15), int(lary[4][1]+15)) and lary[4][2] < lary[3][2]):
                         thumbsUp = "Thumbs UP :D"
-                        #set_volume(0.5)
+                        
                     elif ((avg_x in range(int(lary[4][1]-15), int(lary[4][1]+15)) and lary[4][2] > lary[3][2])):
                         thumbsUp = "Thumbs down D:"
-                        #set_volume(0)
+                        
             # Display thumb status
                 if dir == 1:
                     cv2.putText(
@@ -135,8 +136,18 @@ try:
                     0.8,
                     (211, 0, 0),
                     1
-                )
-        
+                )'''
+            
+        cv2.putText(
+            frame,
+            "Click 'Q' to Exit", 
+            (430, 450),
+            cv2.FONT_HERSHEY_DUPLEX, 
+            0.65,
+            (225,225,225),
+            1
+        )
+    
         cv2.imshow("Hand Landmarks", frame)
         if ((cv2.waitKey(1) & 0xFF == ord('q')) or (cv2.waitKey(1) & 0xFF == ord('Q'))):
             break
