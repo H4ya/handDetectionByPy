@@ -1,0 +1,4 @@
+- add battery display and warning
+- add a way to stop it with hand
+- darkness detection and kill process
+

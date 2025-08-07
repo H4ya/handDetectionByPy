@@ -3,6 +3,7 @@ Hello, I'm in my summer break so I decided to kill myself by starting a new proj
 
 
 I just got an idea, will start recording my changes here!
+
 6/16/2025 5:37:
 
 - started using "lary" (a very terrible short name for landmark array\)
@@ -35,7 +36,38 @@ I'm proud and sleepy
 - deleted the thumbs up\down recognition
 
 03/07/2025 15:33 :
-+ I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
+# todo I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
 
 04/07/2025 11:40 :
-- adding a line between index and thumb for more visual clarity (I failed
+- adding a line between index and thumb for more visual clarity (I failed)
+
+04/07/2025 16:36 :
+- adding a brightness control to the right hand
+- make sure the volume will only be controlled by the left hand did it using a unique if statement
+# todo search for get volume method to display it by default- Done
+
+07/07/2025 15:50 :
+# todo find\make a method to check if the fingers from the same hand
+
+06/08/2025 20:57 : (I'm working from a plane)
+- optimized some of the functions
+- canceled the sameHand function for now (seems not important) 
+# todo check if the current functions are working
+
+06/08/2025 10:24 :
+- fixing the points' x-axis --Done (turns out I used 'w-' when calculating the x-axis (I forgot for what))
+# todo add a function to kill the process when the cam is off (screen is 90% black)
+
+19:40 :
+- created and used the functions isFurther()/Higher/sameHand to simplify the code
+- created new file for features cuz this readme is not a good space to imagine lol
+- cleaned the messy parts of the code -that ctrl the light and sound
+
+20:14 :
+- fixed the cv2 circle issue (it was the shift=1 instead of 0)
+
+21:05 :
+- created and used sameX/Y and pointRange functions
+- working on adding stop sign
+- sum up sameX and Y in one called sameCoord
+
