@@ -1,4 +1,4 @@
-# handDetectionByPy
+!handDetectionByPy
 Hello, I'm in my summer break so I decided to kill myself by starting a new project in the AI field with 0.000% knowledge! Wish me luck!!
 
 
@@ -36,7 +36,7 @@ I'm proud and sleepy
 - deleted the thumbs up\down recognition
 
 03/07/2025 15:33 :
-# todo I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
+! todo I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
 
 04/07/2025 11:40 :
 - adding a line between index and thumb for more visual clarity (I failed)
@@ -44,19 +44,19 @@ I'm proud and sleepy
 04/07/2025 16:36 :
 - adding a brightness control to the right hand
 - make sure the volume will only be controlled by the left hand did it using a unique if statement
-# todo search for get volume method to display it by default- Done
+! todo search for get volume method to display it by default- Done
 
 07/07/2025 15:50 :
-# todo find\make a method to check if the fingers from the same hand
+! todo find\make a method to check if the fingers from the same hand
 
 06/08/2025 20:57 : (I'm working from a plane)
 - optimized some of the functions
 - canceled the sameHand function for now (seems not important) 
-# todo check if the current functions are working
+! todo check if the current functions are working
 
 06/08/2025 10:24 :
 - fixing the points' x-axis --Done (turns out I used 'w-' when calculating the x-axis (I forgot for what))
-# todo add a function to kill the process when the cam is off (screen is 90% black)
+! todo add a function to kill the process when the cam is off (screen is 90% black)
 
 19:40 :
 - created and used the functions isFurther()/Higher/sameHand to simplify the code
