@@ -26,6 +26,10 @@ mp_drawing = mp.solutions.drawing_utils
 webcam = cv2.VideoCapture(0)
 
 try:
+    
+    devices = AudioUtilities.GetSpeakers()
+    interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+    volume = cast(interface, POINTER(IAudioEndpointVolume))
 
     while webcam.isOpened():
         success, frame = webcam.read()

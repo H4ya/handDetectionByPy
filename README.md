@@ -38,4 +38,4 @@ I'm proud and sleepy
 + I want to add a virtual way to stop the code (maybe a function to type ^c in terminal)
 
 04/07/2025 11:40 :
-- adding a line between index and thumb for more visual clarity
+- adding a line between index and thumb for more visual clarity (I failed
