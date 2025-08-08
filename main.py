@@ -58,18 +58,18 @@ def pointRange(id,coord,min,max):
 #############<(_The-Code_)>############# 
 
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.8, min_tracking_confidence=0.7)
+hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7, min_tracking_confidence=0.9)
 mp_drawing = mp.solutions.drawing_utils
 
-webcam = cv2.VideoCapture(0)
+webcam = cv2.VideoCapture(0) # 0 for laptop cam # 1 for phone 
 
 try:
     
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = cast(interface, POINTER(IAudioEndpointVolume))
-
-    while webcam.isOpened():
+    fool = True
+    while fool and webcam.isOpened():
         success, frame = webcam.read()
         if not success:
             continue
@@ -121,9 +121,19 @@ try:
                         )
                     if id > 4 and id % 4 == 0 :
                         #if((lary[id][1]-lary[id-2][1]) in range(-10,10))and (lary[id][3]<=0 and lary[id][3]>= -30) :
-                        if sameCoord(id,id-2,1,20) and pointRange(id,3,-30,0) :
+                        if sameCoord(id,id-2,1,20) and pointRange(id,3,-30,0) and sameCoord(4,3,2,6) and isFurther(3,4): #if all fingers are almost straight
                             cv2.circle(frame,(int(lary[id][1]),int(lary[id][2])),2,(25,25,20),3,0,0)
-                            #if ((lary[4][1] - lary[4-1][1]) in range (-3,3)) and lary[4][3] 
+                            #if (sameCoord(4,3,2,6) and isFurther(3,4)): #if thumb is front and horizontal
+                            cv2.putText(
+                                frame, 
+                                f"STOP", 
+                                (int(lary[0][1]), int(lary[2][2])),  
+                                cv2.FONT_HERSHEY_DUPLEX, 
+                                2, 
+                                (0, 0,225), 
+                                1
+                            )
+                            fool = False
                     ''' 
                     # the "OK" gesture detection
                     if id == 8:  # Only check once per frame

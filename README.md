@@ -71,3 +71,10 @@ I'm proud and sleepy
 - working on adding stop sign
 - sum up sameX and Y in one called sameCoord
 
+08/08/2025 13:04 :
+- added a way to stop the camera by signaling ك in arabic sign lang
+- stuck with VideoCapture 1 not working
+! add a timer before killing the process to make sure the sign was intended
+
+
+
