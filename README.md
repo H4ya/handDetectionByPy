@@ -76,5 +76,7 @@ I'm proud and sleepy
 - stuck with VideoCapture 1 not working
 ! add a timer before killing the process to make sure the sign was intended
 
-
-
+10/80/2025 9:40 :
+- adding .sleep() before closing the app --Done (need optimizing)
+! todo: add a window or text "r u sure u want to exit the program"
+- adding a way to stop the program if cam is black for +3 sec

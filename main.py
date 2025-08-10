@@ -1,11 +1,11 @@
-import cv2
+import cv2, time
+import asyncio
 import mediapipe as mp
 import numpy as np
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 import screen_brightness_control as sbc
-
 
 #####################Functions!!#####################
 
@@ -51,17 +51,19 @@ def pointRange(id,coord,min,max):
 #// def sameX (id1,id2,range or allowed difference)
 #// def sameY() ^^ 
 #// def range(id,{x/y/z},min,max) 
-#
-#
-#
+# create a window for warning?
+# close when 90% of screen is black
+# show battery percentage
 
 #############<(_The-Code_)>############# 
 
+
+    ### <(_Important-Variables_)> ### 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7, min_tracking_confidence=0.9)
 mp_drawing = mp.solutions.drawing_utils
-
 webcam = cv2.VideoCapture(0) # 0 for laptop cam # 1 for phone 
+
 
 try:
     
@@ -121,19 +123,26 @@ try:
                         )
                     if id > 4 and id % 4 == 0 :
                         #if((lary[id][1]-lary[id-2][1]) in range(-10,10))and (lary[id][3]<=0 and lary[id][3]>= -30) :
-                        if sameCoord(id,id-2,1,20) and pointRange(id,3,-30,0) and sameCoord(4,3,2,6) and isFurther(3,4): #if all fingers are almost straight
+                        if sameCoord(id,id-2,1,6) and pointRange(id,3,-30,5) : #if all fingers but the thumb are almost straight
                             cv2.circle(frame,(int(lary[id][1]),int(lary[id][2])),2,(25,25,20),3,0,0)
                             #if (sameCoord(4,3,2,6) and isFurther(3,4)): #if thumb is front and horizontal
-                            cv2.putText(
-                                frame, 
-                                f"STOP", 
-                                (int(lary[0][1]), int(lary[2][2])),  
-                                cv2.FONT_HERSHEY_DUPLEX, 
-                                2, 
-                                (0, 0,225), 
-                                1
-                            )
-                            fool = False
+                            if sameCoord(4,3,2,6) and isFurther(3,4):
+                                cv2.putText(
+                                    frame, 
+                                    f"STOPING THE PROGRAM ", 
+                                    (int(lary[0][1]), int(lary[2][2])),  
+                                    cv2.FONT_HERSHEY_DUPLEX, 
+                                    1, 
+                                    (0, 0,225), 
+                                    0
+                                )
+                                fool = False
+                                break
+                            
+                            #print("Wait for 3 seconds...")
+                            #asyncio.run(asyncio.sleep(3))
+                            #print("Done waiting!")
+                            
                     ''' 
                     # the "OK" gesture detection
                     if id == 8:  # Only check once per frame
@@ -238,8 +247,10 @@ try:
         #    break
         cv2.imshow("Hand Landmarks", frame)
         if (cv2.waitKey(1) and 0xFF == ord('q')) or ( cv2.waitKey(1) and 0xFF == ord('Q')):
+            time.sleep(0.9)
             break
-
+    time.sleep(0.9)
+    
 finally:
     webcam.release()
     cv2.destroyAllWindows()
