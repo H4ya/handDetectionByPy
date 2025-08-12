@@ -1,12 +1,13 @@
-import cv2, time
 import asyncio
-import mediapipe as mp
+import cv2, time
 import numpy as np
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-from ctypes import cast, POINTER
+import mediapipe as mp
+from datetime import datetime
+from collections import Counter
 from comtypes import CLSCTX_ALL
+from ctypes import cast, POINTER
 import screen_brightness_control as sbc
-
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 #####################Functions!!#####################
 
 def isFurther (fing1ID,fing2ID): #takes the **ID** of 2 fingers check if fing1 is further than fing2 according to the x-axis 
@@ -18,7 +19,7 @@ def isFurther (fing1ID,fing2ID): #takes the **ID** of 2 fingers check if fing1 i
     else:
         return 'Error'
 
-#I think I could use it nested for more than 2 fingers checking note: as max function max(1,max(2,3))
+# I can use it nested for more than 2 fingers checking note: as max function max(1,max(2,3))
 def isHigher (fing1ID,fing2ID):  #takes the **ID** of 2 fingers check if fing1ID is higher than fing2ID according to the y-axis 
     if(type(fing1ID) == int and type(fing2ID) == int ): #optimize check type
         if ( lary[fing1ID][2] - lary[fing2ID][2] > 0 ):
@@ -63,15 +64,33 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.7, min_tracking_confidence=0.9)
 mp_drawing = mp.solutions.drawing_utils
 webcam = cv2.VideoCapture(0) # 0 for laptop cam # 1 for phone 
+webcam.set(cv2.CAP_PROP_FRAME_HEIGHT,720) #height
+webcam.set(cv2.CAP_PROP_FRAME_WIDTH,1280) #width
+webcam.set(cv2.CAP_PROP_FPS,30) #FPS
 
-
+savedFrame = None
+fileObject = open("outputFile.txt", "r") #read the file
+if (fileObject.readline().strip() == str(datetime.now().date())): #if file is from the same date don't overwrite
+    fileObject = open("outputFile.txt", "a") # Open for writing, **WON'T** overwrite
+else:
+    fileObject = open("outputFile.txt", "w") # Open for writing, **WILL** overwrite
+    fileObject.write(str(datetime.now().date())+'\n')
+fbs = None
+h = None
+w = None
+finalMSG = ""
+startTime = time.time()
+endTime = None
 try:
-    
+
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = cast(interface, POINTER(IAudioEndpointVolume))
     fool = True
-    while fool and webcam.isOpened():
+    is_black = False
+    prev_frame_time = 0
+
+    while not is_black and fool and webcam.isOpened():
         success, frame = webcam.read()
         if not success:
             continue
@@ -81,9 +100,14 @@ try:
         thumbsUp = "No thumbs |:"
 
         # Process frame
+        h, w, _ = frame.shape
+        cv2.putText(frame, f", h= {h}, w= {w} " , (130, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 200, 0), 2, cv2.LINE_AA)
+
         frame.flags.writeable = False
         results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         frame.flags.writeable = True
+        
+        
         
         if results.multi_hand_landmarks and results.multi_handedness:
             for hand_idx, (hand_landmarks, handedness) in enumerate(zip(results.multi_hand_landmarks, results.multi_handedness)):
@@ -96,10 +120,9 @@ try:
                     mp_drawing.DrawingSpec(color=(225,225,225), thickness=1),
                 )
                 
-                h, w, _ = frame.shape
+                
                 label = handedness.classification[0].label
                 dir = 1 if label == "Right" else 0
-
                 # Store landmarks with direction
                 lary = np.zeros((21, 4))  #def lary [dir, x, y, z] for each landmark
                 for id, landmark in enumerate(hand_landmarks.landmark):
@@ -113,35 +136,34 @@ try:
                     # Display fingertip coordinates
                     if id % 4 == 0:
                         cv2.putText(
-                            frame, 
+                            frame,
                             f"P{id}({lary[id][1]},{lary[id][2]},{round(lary[id][3],3)})", 
                             (int(lary[id][1]), int(lary[id][2])),  # Position at landmark
                             cv2.FONT_HERSHEY_DUPLEX, 
                             0.4, 
-                            (211, 51, 51), 
+                            (211, 51, 51),
                             1
                         )
-                    if id > 4 and id % 4 == 0 :
-                        #if((lary[id][1]-lary[id-2][1]) in range(-10,10))and (lary[id][3]<=0 and lary[id][3]>= -30) :
-                        if sameCoord(id,id-2,1,6) and pointRange(id,3,-30,5) : #if all fingers but the thumb are almost straight
-                            cv2.circle(frame,(int(lary[id][1]),int(lary[id][2])),2,(25,25,20),3,0,0)
-                            #if (sameCoord(4,3,2,6) and isFurther(3,4)): #if thumb is front and horizontal
-                            if sameCoord(4,3,2,6) and isFurther(3,4):
-                                cv2.putText(
-                                    frame, 
-                                    f"STOPING THE PROGRAM ", 
-                                    (int(lary[0][1]), int(lary[2][2])),  
-                                    cv2.FONT_HERSHEY_DUPLEX, 
-                                    1, 
-                                    (0, 0,225), 
-                                    0
-                                )
-                                fool = False
-                                break
-                            
-                            #print("Wait for 3 seconds...")
-                            #asyncio.run(asyncio.sleep(3))
-                            #print("Done waiting!")
+                    if dir == 0: #the shut down process
+                        NumOfStraightFingers = 0
+                        for i in range (8,21,4):
+                            if sameCoord(i,i-2,1,15) and pointRange(i,3,-30,30) : #if all fingers but the thumb are almost straight
+                                cv2.circle(frame,(int(lary[i][1]),int(lary[i][2])),2,(25,25,20),3,0,0)
+                                NumOfStraightFingers  += 1
+                                if NumOfStraightFingers == 4 and sameCoord(4,3,2,6) and isFurther(3,4):   #if thumb is front and horizontal
+                                    cv2.putText(
+                                        frame,
+                                        f"STOPPING THE PROGRAM ", 
+                                        (int(lary[0][1]), int(lary[2][2])),  
+                                        cv2.FONT_HERSHEY_DUPLEX, 
+                                        1, 
+                                        (0, 0,225), 
+                                        0
+                                    )
+                                    savedFrame = frame
+                                    fool = False
+                                    break
+
                             
                     ''' 
                     # the "OK" gesture detection
@@ -178,7 +200,7 @@ try:
                             volume.SetMasterVolumeLevelScalar(dist_yP, None)
                     if hand == 1: # right for brightness ctrl
                         if(isFurther(8,4)):
-                            if (dist_yP<= .08):
+                            if (dist_yP<= .06):
                                 dist_yP = 0 
                             elif (dist_yP>= .99): # needed it to manage the abnormal values (negative or over the limit 170)
                                 dist_yP = 1
@@ -216,7 +238,11 @@ try:
                     (211, 0, 0),
                     1
                 )'''
-            
+        new_frame_time = time.time()
+        fps = 1 / (new_frame_time - prev_frame_time)
+        prev_frame_time = new_frame_time
+        fps = int(fps) # Convert to integer for display
+        cv2.putText(frame, f"{str(fps)}FPS" , (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 200, 0), 2, cv2.LINE_AA)
         cv2.putText(
             frame,
             "Click 'Q' to Exit", 
@@ -243,18 +269,36 @@ try:
             (211, 0, 0), 
             1
         )
-        #if fool :
-        #    break
         cv2.imshow("Hand Landmarks", frame)
-        if (cv2.waitKey(1) and 0xFF == ord('q')) or ( cv2.waitKey(1) and 0xFF == ord('Q')):
+        if (cv2.waitKey(1) and 0xFF == ord('q')) or ( cv2.waitKey(1) and 0xFF == ord('Q')) :
             time.sleep(0.9)
+            finalMSG = "The program was shut down by the user's input"
+            break
+        if is_black:
+            finalMSG = "The program was shut down by a black frame"
             break
     time.sleep(0.9)
+    finalMSG = "The program was shut down by the user's gesture"
     
+except:
+    finalMSG = "The program was shut down by an exception"
 finally:
+    endTime = time.time()
+    
+    fileObject.write(
+    "---------------"
+    f"\nThis file was:\n"
+    f"open at {time.ctime(startTime)}\n"
+    f"close at {time.ctime(endTime)}\n"
+    f"total usage in minutes = {round((endTime-startTime)/60,2)}\n"
+    f"the frame h = {h}, w = {w}\n"
+    f"with {fps} FPS\n"
+    f"the final msg was '{finalMSG}'\n---------------\n")
+    cv2.imwrite('theLastFrame.jpg', savedFrame)
     webcam.release()
     cv2.destroyAllWindows()
     hands.close()
+    fileObject.close() # Important to close the file
 
 
 

@@ -1,0 +1,11 @@
+the frame h = 480, w = 640
+with 13 FPS
+for my laptop cam
+==============================
+the frame h = 720, w = 1280
+with 15 FPS
+for my phone front cam
+
+
+the final msg was 'The program was shut down by an exception' (I unplugged the headphones)
+

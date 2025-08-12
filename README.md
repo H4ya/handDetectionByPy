@@ -80,3 +80,21 @@ I'm proud and sleepy
 - adding .sleep() before closing the app --Done (need optimizing)
 ! todo: add a window or text "r u sure u want to exit the program"
 - adding a way to stop the program if cam is black for +3 sec
+
+10/80/2025 18:02 :
+- fixed the issue of the stopping gesture
+
+11/08/2025 14:08 : 
+- added a photo of the last frame to Identify the cause of shut down
+- added a 'finalMSG' var to contain the reason of shut down
+- added an output file to record when opened\closed, h and w of the frame
+- got it working with phones camera
+! todo: decide which gesture stops the program
+! add a calculation that put the messages in the corners with respect to the difference in frames h&w with different cameras
+! add a way to rewrite to overwrite the output file if the date is not today-- Done
+
+12/08/2025 12:54 :
+! add a function to calc the hands\user distance to allow\prefer gestures from the ideal range\distance
+
+#today I will be working on all the todos from the previous days so I can start working on objects by 14/08 max!
+
