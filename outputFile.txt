@@ -1,37 +1,37 @@
-2026-01-12
+2026-04-04
 ---------------
 This file was:
-open at Mon Jan 12 23:22:34 2026
-close at Mon Jan 12 23:23:38 2026
-total usage in minutes = 1.07
+open at Sat Apr  4 06:28:41 2026
+close at Sat Apr  4 06:29:15 2026
+total usage in minutes = 0.58
 the frame h = 720, w = 1280
-with 11 FPS
+with 9 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Mon Jan 12 23:25:52 2026
-close at Mon Jan 12 23:26:35 2026
-total usage in minutes = 0.73
+open at Sat Apr  4 06:29:27 2026
+close at Sat Apr  4 06:29:29 2026
+total usage in minutes = 0.02
 the frame h = 720, w = 1280
-with 14 FPS
+with 0 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Mon Jan 12 23:36:23 2026
-close at Mon Jan 12 23:36:33 2026
-total usage in minutes = 0.18
+open at Sat Apr  4 06:29:50 2026
+close at Sat Apr  4 06:29:52 2026
+total usage in minutes = 0.03
 the frame h = 720, w = 1280
-with 16 FPS
+with 7 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Mon Jan 12 23:36:43 2026
-close at Mon Jan 12 23:37:10 2026
-total usage in minutes = 0.46
+open at Sat Apr  4 06:30:01 2026
+close at Sat Apr  4 06:31:44 2026
+total usage in minutes = 1.73
 the frame h = 720, w = 1280
-with 14 FPS
+with 6 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
