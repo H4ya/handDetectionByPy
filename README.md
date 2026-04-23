@@ -72,7 +72,7 @@ I'm proud and sleepy
 - sum up sameX and Y in one called sameCoord
 
 08/08/2025 13:04 :
-- added a way to stop the camera by signaling ك in arabic sign lang
+- added a way to stop the camera by signaling ك\B in sign lang
 - stuck with VideoCapture 1 not working
 ! add a timer before killing the process to make sure the sign was intended
 
@@ -98,3 +98,12 @@ I'm proud and sleepy
 
 #today I will be working on all the todos from the previous days so I can start working on objects by 14/08 max!
 
+
+كنت اشتغل على اضافه التشيك تايب فنقشن في كل الباقيه
+
+اضفت البطاريه
+اضفت كتابه حرف بي اذا طلع اشاره لايك باليسار
+اضفتها مكان سكرين شوت 
+
+ابغى اضيف مقدمه اول مايفتح البرنامج يطلب المستخدم يفتح يديه ويحسب الحد لطول اصابعه ويستخدمها عشان يحسب النسب وغيرها
+احتاج احدد بعد محدد عن الكاميرا واكتب لليوزر يقرب\يبعد لنتائج ادق

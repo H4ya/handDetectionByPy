@@ -1,136 +1,37 @@
-2025-08-12
+2026-01-12
 ---------------
 This file was:
-open at Tue Aug 12 12:28:41 2025
-close at Tue Aug 12 12:29:16 2025
-total usage in minutes = 0.58
-the frame h = 480, w = 640
-with 8 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 12:30:00 2025
-close at Tue Aug 12 12:31:30 2025
-total usage in minutes = 1.5
+open at Mon Jan 12 23:22:34 2026
+close at Mon Jan 12 23:23:38 2026
+total usage in minutes = 1.07
 the frame h = 720, w = 1280
-with 15 FPS
+with 11 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Tue Aug 12 12:42:49 2025
-close at Tue Aug 12 12:49:27 2025
-total usage in minutes = 6.64
+open at Mon Jan 12 23:25:52 2026
+close at Mon Jan 12 23:26:35 2026
+total usage in minutes = 0.73
 the frame h = 720, w = 1280
-with 16 FPS
-the final msg was 'The program was shut down by an exception' (I unplugged the headphones)
----------------
----------------
-This file was:
-open at Tue Aug 12 13:01:56 2025
-close at Tue Aug 12 13:05:19 2025
-total usage in minutes = 3.39
-the frame h = 720, w = 1280
-with 15 FPS
+with 14 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Tue Aug 12 13:42:42 2025
-close at Tue Aug 12 13:43:09 2025
-total usage in minutes = 0.45
-the frame h = 540, w = 960
-with 15 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 13:43:55 2025
-close at Tue Aug 12 13:44:29 2025
-total usage in minutes = 0.57
-the frame h = 540, w = 960
-with 15 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 13:45:52 2025
-close at Tue Aug 12 13:47:54 2025
-total usage in minutes = 2.04
-the frame h = 540, w = 960
-with 15 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 13:57:42 2025
-close at Tue Aug 12 13:58:14 2025
-total usage in minutes = 0.53
-the frame h = 540, w = 960
-with 16 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 14:13:46 2025
-close at Tue Aug 12 14:13:56 2025
+open at Mon Jan 12 23:36:23 2026
+close at Mon Jan 12 23:36:33 2026
 total usage in minutes = 0.18
 the frame h = 720, w = 1280
-with 20 FPS
+with 16 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
 ---------------
 This file was:
-open at Tue Aug 12 14:14:15 2025
-close at Tue Aug 12 14:14:30 2025
-total usage in minutes = 0.26
+open at Mon Jan 12 23:36:43 2026
+close at Mon Jan 12 23:37:10 2026
+total usage in minutes = 0.46
 the frame h = 720, w = 1280
-with 20 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 14:23:48 2025
-close at Tue Aug 12 14:24:01 2025
-total usage in minutes = 0.22
-the frame h = 720, w = 1280
-with 12 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 14:24:34 2025
-close at Tue Aug 12 14:24:51 2025
-total usage in minutes = 0.27
-the frame h = 720, w = 1280
-with 21 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 14:25:04 2025
-close at Tue Aug 12 14:25:17 2025
-total usage in minutes = 0.22
-the frame h = 720, w = 1280
-with 10 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 16:00:03 2025
-close at Tue Aug 12 16:01:09 2025
-total usage in minutes = 1.09
-the frame h = 720, w = 1280
-with 17 FPS
-the final msg was 'The program was shut down by the user's gesture'
----------------
----------------
-This file was:
-open at Tue Aug 12 16:02:24 2025
-close at Tue Aug 12 16:25:07 2025
-total usage in minutes = 22.71
-the frame h = 720, w = 1280
-with 12 FPS
+with 14 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
