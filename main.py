@@ -15,17 +15,9 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 #####################Functions!!#####################
 
-def coordTranslate(coord):
-    if 'x' == coord: coord = 1 
-    elif 'y' == coord: coord = 2
-    elif 'z' == coord: coord = 3
-    elif not isinstance(coord, int):
-        return TypeError(f"Expected int, got {type(coord).__name__}")
-    return coord
-
-def typeIsInt(x):
-    if not isinstance(x,int) :
-        raise TypeError(f"Expected int, got {type(x).__name__}")
+def typeIsInt(n):
+    if not isinstance(n,int) :
+        raise TypeError(f"Expected int, got {type(n).__name__}")
     return True
 
 def checkType(x, y, expected_type):
@@ -54,13 +46,11 @@ def sameHand (id1, id2): #takes the fingers then return true if same(same hand)/
             return True
 
 def sameCoord2(id1,id2,coord,maxDif):
-    coord = coordTranslate(coord)
     if ((lary[id1][coord]- lary[id2][coord]) in range(-int(maxDif/2),int(maxDif/2))):
         return True
     else: return False
 
 def sameCoord(ids, coord, maxDif): #ids can contain 1 or more id as a list
-    coord = coordTranslate(coord)
     # Check all pairs
     for i in range(len(ids)):
         for j in range(i + 1, len(ids)):
@@ -69,7 +59,6 @@ def sameCoord(ids, coord, maxDif): #ids can contain 1 or more id as a list
     return True
 
 def pointCoordRange(id,coord,min,max):
-    coord = coordTranslate(coord)
     if ( lary[id][coord] >= min and lary[id][coord] <= max ):
         return True
     else: False
@@ -92,6 +81,7 @@ def showKeyboard(w,h):
 
 
     ### <(_Important-Variables_)> ### 
+x,y,z=1,2,3
 fbs = 30
 h = 720 # 720
 w = 720 # 1280
@@ -182,7 +172,7 @@ try:
                     if dir == 0: #the shut down process
                         NumOfStraightFingers = 0
                         for i in range (8,21,4):
-                            if sameCoord2(i,i-2,'x',15) and pointCoordRange(i,3,-30,30) : #if all fingers but the thumb are almost straight
+                            if sameCoord2(i,i-2,x,15) and pointCoordRange(i,3,-30,30) : #if all fingers but the thumb are almost straight
                                 cv2.circle(frame,(int(lary[i][1]),int(lary[i][2])),2,(25,25,20),3,0,0)
                                 NumOfStraightFingers  += 1
                                 continue
