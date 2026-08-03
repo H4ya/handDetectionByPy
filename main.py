@@ -1,7 +1,7 @@
 import psutil
-import pyautogui
 import asyncio
 import cv2, time
+import pyautogui
 import numpy as np
 import mediapipe as mp
 from datetime import datetime
@@ -108,7 +108,6 @@ startTime = time.time()
 endTime = None
 
 try:
-
     devices = AudioUtilities.GetSpeakers()
     interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
     volume = cast(interface, POINTER(IAudioEndpointVolume))
