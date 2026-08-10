@@ -1,0 +1,7 @@
+~add battery display and warning~ Done! 2025-09-15
+~add a way to stop it with hand~ Done
+- darkness detection and kill process
+- add a gesture to take a photo of user (fave the frame 3sec after the gesture)+ a count down before it!
+لما اسوي لايك يحسب ثانيتين ويكتب " حرك ابهام قطريا لتحديد الفريم" ثم يحدد الفريم ويعد 321 ويصور
+او اخلي السكرين شوت اذا لقى نظاره
+يمكن اخليه يكتب بملف تم التقاط صوره في الساعه كذا كذا واذا لقط وحده قبل اقل من 40 ثانيه يوقف الين يمر وقت

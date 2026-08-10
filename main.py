@@ -1,19 +1,54 @@
+import cv2
+import time
 import psutil
 import asyncio
-import cv2, time
 import pyautogui
+import threading
 import numpy as np
 import mediapipe as mp
 from datetime import datetime
 from collections import Counter
-from comtypes import CLSCTX_ALL
-from ctypes import cast, POINTER
 import screen_brightness_control as sbc
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+#pip install -r req.txt 
 
 #import myfunctionsfile as mff
 
 #####################Functions!!#####################
+
+class ThreadedCamera:
+    def __init__(self, src=0):
+        self.cap = cv2.VideoCapture(src)
+        self.ret = False
+        self.frame = None
+        self.lock = threading.Lock()
+        self.running = True
+        self.thread = threading.Thread(target=self._update, daemon=True)
+        self.thread.start()
+
+    def _update(self):
+        while self.running:
+            ret, frame = self.cap.read()
+            if ret:
+                with self.lock:
+                    self.ret = ret
+                    self.frame = frame
+
+    def read(self):
+        with self.lock:
+            if self.frame is None:
+                return self.ret, None
+            return self.ret, self.frame.copy()
+
+    def isOpened(self):
+        return self.cap.isOpened()
+
+    def release(self):
+        self.running = False
+        self.thread.join(timeout=1)
+        self.cap.release()
+
 
 def typeIsInt(n):
     if not isinstance(n,int) :
@@ -85,20 +120,21 @@ x,y,z=1,2,3
 fbs = 30
 h = 720 # 720
 w = 720 # 1280
+fps= 0
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=2, min_detection_confidence=0.9, min_tracking_confidence=0.9)
 mp_drawing = mp.solutions.drawing_utils
-webcam = cv2.VideoCapture(0) # 0 for laptop cam # 1 for phone 
+webcam = ThreadedCamera(0) # 0 for laptop cam # 1 for phone 
 #webcam.set(cv2.CAP_PROP_FRAME_HEIGHT,h) #height
 #webcam.set(cv2.CAP_PROP_FRAME_WIDTH,w) #width
 #webcam.set(cv2.CAP_PROP_FPS,fbs) #FPS
-finalMSG = None
+finalMSG = "The program was shut down by the user's gesture"
 savedFrame = None
-screenShot = None
 io = 0
 key= cv2.waitKey(1)
 battery = psutil.sensors_battery()
 fileObject = open("outputFile.txt", "r") #read the file
+logsFile= open("Logs.txt","a")
 if (fileObject.readline().strip() == str(datetime.now().date())): #if file is from the same date don't overwrite
     fileObject = open("outputFile.txt", "a") # Open for writing, **WON'T** overwrite (append)
 else:
@@ -108,9 +144,8 @@ startTime = time.time()
 endTime = None
 
 try:
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
+    device = AudioUtilities.GetSpeakers()
+    volume = device.EndpointVolume
     fool = True
     is_black = False
     prev_frame_time = 0
@@ -127,7 +162,7 @@ try:
 
         # Process frame
         h, w, _ = frame.shape
-        cv2.putText(frame, f", h= {h}, w= {w} " , (130, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 200, 0), 2, cv2.LINE_AA)
+        cv2.putText(frame, f", h= {h}, w= {w} " , (10, 30), cv2.FONT_HERSHEY_PLAIN, 1, (0, 200, 0), 2, cv2.LINE_AA)
 
         frame.flags.writeable = False
         results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
@@ -158,13 +193,13 @@ try:
                     ]
                     
                     # Display fingertip coordinates
-                    if id % 4 == 0:
+                    if id == 8:
                         cv2.putText(
                             frame,
                             f"P<{dir}>{id}({lary[id][1]},{lary[id][2]},{round(lary[id][3],3)})", 
                             (int(lary[id][1]), int(lary[id][2])),  # Position at landmark
-                            cv2.FONT_HERSHEY_DUPLEX, 
-                            0.4, 
+                            cv2.FONT_HERSHEY_PLAIN, 
+                            1, 
                             (211, 51, 51),
                             1
                         )
@@ -182,12 +217,12 @@ try:
                                         frame,
                                         f"STOPPING THE PROGRAM ", 
                                         (int(lary[0][1]), int(lary[2][2])),  
-                                        cv2.FONT_HERSHEY_DUPLEX, 
+                                        cv2.FONT_HERSHEY_PLAIN, 
                                         1, 
                                         (0, 0,225), 
                                         0
                                     )
-                                    savedFrame = frame
+                                    savedFrame = frame.copy()
                                     fool = False
                                     break
                     # if ( 0 == dir and isHigher(4,3) and isFurther(8,7) and sameCoord(4,2,)) :
@@ -266,7 +301,7 @@ try:
                         (211, 0, 0), 
                     )
                     #screenShot = frame
-                    #cv2.imwrite(f'shots\cheeeese{filename}.jpg', screenShot)
+                    #cv2.imwrite(f'shots\\cheeeese{filename}.jpg', screenShot)
                     #io+=1
                     '''
                     #time.perf_counter
@@ -287,17 +322,9 @@ try:
         new_frame_time = time.time()
         fps = 1 / (new_frame_time - prev_frame_time)
         prev_frame_time = new_frame_time
-        fps = int(fps) # Convert to integer for display
-        cv2.putText(frame, f"{str(fps)}FPS" , (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 200, 0), 2, cv2.LINE_AA)
-        cv2.putText(
-            frame,
-            "Click 'Q' to Exit", 
-            (430, 450),
-            cv2.FONT_HERSHEY_DUPLEX, 
-            0.65,
-            (225,225,225),
-            1
-        )
+        fps = int(fps) # Convert to integer for display 
+        cv2.putText(frame, f"{str(fps)}FPS" , (10, 30), cv2.FONT_HERSHEY_PLAIN, 1, (211, 51, 51), 2, cv2.LINE_AA)
+        cv2.putText(frame,"Click 'Q' to Exit", (int(w*0.96), int(h*0.96)),cv2.FONT_HERSHEY_PLAIN,1,(211, 51, 51),1)
         if battery is not None:
             percentage = battery.percent
             cv2.putText(
@@ -324,19 +351,20 @@ try:
             frame,
             f"volume lvl is : {int(volume.GetMasterVolumeLevelScalar()*100)}%", 
             (15, 80),
-            cv2.FONT_HERSHEY_DUPLEX, 
+            cv2.FONT_HERSHEY_PLAIN, 
             0.8, 
             (211, 0, 0), 
             1
         )
         cv2.putText(frame,f"brightness lvl is : {(sbc.get_brightness())}%", 
             (15, 130),
-            cv2.FONT_HERSHEY_DUPLEX, 
+            cv2.FONT_HERSHEY_PLAIN, 
             0.8, 
             (211, 0, 0), 
             1
         )
         cv2.imshow("Hand Landmarks", frame)
+        key = cv2.waitKey(1) & 0xFF   # refresh every iteration
         #if (cv2.waitKey(1) and 0xFF == ord('q')) or ( cv2.waitKey(1) and 0xFF == ord('Q')) :
         if key==ord("q"):
             cv2.waitKey(500)
@@ -345,23 +373,30 @@ try:
         if is_black:
             finalMSG = "The program was shut down by a black frame"
             break
+        
     cv2.waitKey(500) #changed it from time.sleep(0.9) to waitKey
-    finalMSG = "The program was shut down by the user's gesture"
-    
-except:
-    finalMSG = "The program was shut down by an exception"
+
+except Exception as e:
+    finalMSG = f"The program was shut down by an exception: {e}"
 finally:
     endTime = time.time()
-    fileObject.write(
-    "---------------"
-    f"\nThis file was:\n"
-    f"open at {time.ctime(startTime)}\n"
-    f"close at {time.ctime(endTime)}\n"
-    f"total usage in minutes = {round((endTime-startTime)/60,2)}\n"
-    f"the frame h = {h}, w = {w}\n"
-    f"with {fps} FPS\n"
-    f"the final msg was '{finalMSG}'\n---------------\n")
-    cv2.imwrite('theLastFrame.jpg', savedFrame)
+    log = ("---------------"
+        f"\nThis file was:\n"
+        f"open at {time.ctime(startTime)}\n"
+        f"close at {time.ctime(endTime)}\n"
+        f"total usage in minutes = {round((endTime-startTime)/60,2)}\n"
+        f"the frame h = {h}, w = {w}\n"
+        f"with {fps} FPS\n"
+        f"the final msg was '{finalMSG}'\n---------------\n"
+        f"Last frame was {'saved' if(savedFrame is not None) else 'NOT saved'}\n")
+
+    logsFile.write(log)
+    fileObject.write(log)
+    print(log)
+    
+    if savedFrame is not None:
+        cv2.imwrite('theLastFrame.jpg', savedFrame)
+
     webcam.release()
     cv2.destroyAllWindows()
     hands.close()

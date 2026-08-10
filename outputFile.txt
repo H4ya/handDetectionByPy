@@ -1,37 +1,81 @@
-2026-04-04
+2026-08-10
 ---------------
 This file was:
-open at Sat Apr  4 06:28:41 2026
-close at Sat Apr  4 06:29:15 2026
-total usage in minutes = 0.58
+open at Mon Aug 10 12:40:17 2026
+close at Mon Aug 10 12:40:44 2026
+total usage in minutes = 0.46
+the frame h = 720, w = 1280
+with 18 FPS
+the final msg was 'The program was shut down by the user's gesture'
+---------------
+Last frame was saved
+---------------
+This file was:
+open at Mon Aug 10 12:41:22 2026
+close at Mon Aug 10 12:41:47 2026
+total usage in minutes = 0.41
+the frame h = 720, w = 1280
+with 15 FPS
+the final msg was 'The program was shut down by the user's gesture'
+---------------
+Last frame was saved
+---------------
+This file was:
+open at Mon Aug 10 12:42:01 2026
+close at Mon Aug 10 12:42:41 2026
+total usage in minutes = 0.67
 the frame h = 720, w = 1280
 with 9 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
+Last frame was saved
 ---------------
 This file was:
-open at Sat Apr  4 06:29:27 2026
-close at Sat Apr  4 06:29:29 2026
-total usage in minutes = 0.02
+open at Mon Aug 10 12:43:05 2026
+close at Mon Aug 10 12:44:52 2026
+total usage in minutes = 1.79
 the frame h = 720, w = 1280
-with 0 FPS
+with 12 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
+Last frame was NOT saved
 ---------------
 This file was:
-open at Sat Apr  4 06:29:50 2026
-close at Sat Apr  4 06:29:52 2026
-total usage in minutes = 0.03
+open at Mon Aug 10 12:46:09 2026
+close at Mon Aug 10 12:47:15 2026
+total usage in minutes = 1.1
 the frame h = 720, w = 1280
-with 7 FPS
+with 13 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
+Last frame was NOT saved
 ---------------
 This file was:
-open at Sat Apr  4 06:30:01 2026
-close at Sat Apr  4 06:31:44 2026
-total usage in minutes = 1.73
+open at Mon Aug 10 12:52:08 2026
+close at Mon Aug 10 12:53:46 2026
+total usage in minutes = 1.63
 the frame h = 720, w = 1280
-with 6 FPS
+with 21 FPS
 the final msg was 'The program was shut down by the user's gesture'
 ---------------
+Last frame was saved
+---------------
+This file was:
+open at Mon Aug 10 12:56:25 2026
+close at Mon Aug 10 12:57:27 2026
+total usage in minutes = 1.04
+the frame h = 720, w = 1280
+with 10 FPS
+the final msg was 'The program was shut down by the user's gesture'
+---------------
+Last frame was saved
+---------------
+This file was:
+open at Mon Aug 10 13:11:23 2026
+close at Mon Aug 10 13:12:23 2026
+total usage in minutes = 0.99
+the frame h = 720, w = 1280
+with 19 FPS
+the final msg was 'The program was shut down by the user's gesture'
+---------------
+Last frame was NOT saved
